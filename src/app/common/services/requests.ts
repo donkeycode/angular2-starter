@@ -170,7 +170,7 @@ export class RequestService {
       refresh_token: localStorage.getItem('auth_refresh_token'),
       grant_type: 'refresh_token'
     };
-    return this.post(config.baseApi + '/noauth/oauth/v2/token', body);
+    return this.post(config.baseApi + '/oauth/v2/token', body);
   }
 
   private refreshToken(error) {

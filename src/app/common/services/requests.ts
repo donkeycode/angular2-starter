@@ -37,6 +37,10 @@ export class RequestService {
   }
 
   public transformUrl(url) {
+    if (url.indexOf('://') === -1) {
+      url = config.baseApi + '/' + url;
+    }
+    
     if (url.indexOf('access_token') > -1) {
       return url;
     }

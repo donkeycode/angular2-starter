@@ -3,6 +3,8 @@
 // rc2 workaround
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 import { enableProdMode } from '@angular/core';
+import { appInjector } from '../app-injector';
+
 // Environment Providers
 let PROVIDERS = [
   // common env directives
@@ -22,6 +24,10 @@ if ('production' === ENV) {
     // custom providers in production
   ];
 
+  _decorateComponentRef = (cmpRef) => {
+    appInjector(cmpRef.injector);
+  };
+
 } else {
 
   _decorateComponentRef = (cmpRef) => {
@@ -29,6 +35,7 @@ if ('production' === ENV) {
     enableDebugTools(cmpRef);
     (<any>window).ng.probe = _ng.probe;
     (<any>window).ng.coreTokens = _ng.coreTokens;
+    appInjector(cmpRef.injector);
     return cmpRef;
   };
 

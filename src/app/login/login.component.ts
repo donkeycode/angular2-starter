@@ -33,6 +33,8 @@ export class Login {
         .then(() => {
           this.router.navigateByUrl('/');
         });
+    }, (err) => {
+      this.errors_global = err.error_description;
     });
   }
 }

@@ -136,7 +136,7 @@ module.exports = {
       /*
        * Typescript loader support for .ts and Angular 2 async routes via .async.ts
        * Replace templateUrl and stylesUrl with require()
-       * 
+       *
        * See: https://github.com/s-panferov/awesome-typescript-loader
        * See: https://github.com/TheLarkInn/angular2-template-loader
        */
@@ -157,14 +157,15 @@ module.exports = {
       },
 
       /*
-       * to string and css loader support for *.css files
+       * support for *.scss files
        * Returns file content as string
        *
        */
-      {
-        test: /\.css$/,
-        loaders: ['to-string-loader', 'css-loader']
-      },
+       {
+         test: /\.scss$/,
+         exclude: /node_modules/,
+         loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
+       },
 
       /* Raw loader support for *.html
        * Returns file content as string
@@ -176,7 +177,7 @@ module.exports = {
         loader: 'raw-loader',
         exclude: [helpers.root('src/index.html')]
       },
-      
+
       /* File loader for supporting images, for example, in CSS files.
       */
       {

@@ -12,6 +12,15 @@ export class RequestService {
   constructor(public http: Http) {
   }
 
+
+  private parseMessage(response) {
+    if (response && response._body) {
+      return JSON.parse(response._body);
+    }
+
+    return response;
+  }
+
   public transformUrl(url) {
     if (url.indexOf('access_token') > -1) {
       return url;
@@ -35,10 +44,7 @@ export class RequestService {
         .post(this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders })
         .subscribe(
           (response: any) => {
-            if (response && response._body) {
-              resolve(JSON.parse(response._body));
-            }
-            resolve();
+            resolve(this.parseMessage(response));
           },
           (error) => {
             if (error.status === 401) {
@@ -46,16 +52,16 @@ export class RequestService {
               .then(() => {
                 this.post(url, body)
                 .then((response) => {
-                  resolve(response);
+                  resolve(this.parseMessage(response));
                 }, (error) => {
-                  reject(error)
+                  reject(this.parseMessage(error))
                 });
               }, (error) => {
-                resolve(error);
+                resolve(this.parseMessage(error));
                 UserService.redirectLogin();
               });
             } else {
-              reject(error);
+              reject(this.parseMessage(error));
             }
           }
         )
@@ -68,10 +74,7 @@ export class RequestService {
         .put(this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders })
         .subscribe(
           (response: any) => {
-            if (response && response._body) {
-              resolve(JSON.parse(response._body));
-            }
-            resolve();
+            resolve(this.parseMessage(response));
           },
           (error) => {
             if (error.status === 401) {
@@ -79,16 +82,16 @@ export class RequestService {
               .then(() => {
                 this.put(url, body)
                 .then((response) => {
-                  resolve(response);
+                  resolve(this.parseMessage(response));
                 }, (error) => {
-                  reject(error)
+                  reject(this.parseMessage(error))
                 });
               }, (error) => {
-                resolve(error);
+                resolve(this.parseMessage(error));
                 UserService.redirectLogin();
               });
             } else {
-              reject(error);
+              reject(this.parseMessage(error));
             }
           }
         )
@@ -102,10 +105,7 @@ export class RequestService {
         .get(this.transformUrl(url), { headers: contentHeaders })
         .subscribe(
           (response: any) => {
-            if (response && response._body) {
-              resolve(JSON.parse(response._body));
-            }
-            resolve();
+            resolve(this.parseMessage(response));
           },
           (error) => {
             if (error.status === 401) {
@@ -113,16 +113,16 @@ export class RequestService {
               .then(() => {
                 this.get(url)
                 .then((response) => {
-                  resolve(response);
+                  resolve(this.parseMessage(response));
                 }, (error) => {
-                  reject(error)
+                  reject(this.parseMessage(error))
                 });
               }, (error) => {
-                resolve(error);
+                resolve(this.parseMessage(error));
                 UserService.redirectLogin();
               });
             } else {
-              reject(error);
+              reject(this.parseMessage(error));
             }
           }
         )
@@ -136,10 +136,7 @@ export class RequestService {
         .delete(this.transformUrl(url), { headers: contentHeaders })
         .subscribe(
           (response: any) => {
-            if (response && response._body) {
-              resolve(JSON.parse(response._body));
-            }
-            resolve();
+            resolve(this.parseMessage(response));
           },
           (error) => {
             if (error.status === 401) {
@@ -147,16 +144,16 @@ export class RequestService {
               .then(() => {
                 this.delete(url)
                 .then((response) => {
-                  resolve(response);
+                  resolve(this.parseMessage(response));
                 }, (error) => {
-                  reject(error)
+                  reject(this.parseMessage(error))
                 });
               }, (error) => {
-                resolve(error);
+                resolve(this.parseMessage(error));
                 UserService.redirectLogin();
               });
             } else {
-              reject(error);
+              reject(this.parseMessage(error));
             }
           }
         )

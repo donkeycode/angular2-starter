@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Http, HTTP_PROVIDERS } from '@angular/http';
 import { contentHeaders } from './headers';
 import { config } from '../../config';
 import { UserService } from './user';

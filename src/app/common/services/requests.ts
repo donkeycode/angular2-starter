@@ -21,21 +21,6 @@ export class RequestService {
     return response;
   }
 
-  private handleUnauthorized(resolve, reject, callback) {
-    this.refreshToken()
-    .then(() => {
-      callback
-      .then((response) => {
-        resolve(this.parseMessage(response));
-      }, (error) => {
-        reject(this.parseMessage(error))
-      });
-    }, (error) => {
-      resolve(this.parseMessage(error));
-      UserService.redirectLogin();
-    });
-  }
-
   public transformUrl(url) {
     if (url.indexOf('access_token') > -1) {
       return url;
@@ -53,56 +38,33 @@ export class RequestService {
     return url;
   }
 
-  public post(url, body): any {
-    return new Promise(
-      (resolve, reject) => this.http
-        .post(this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders })
-        .subscribe(
-          (response: any) => {
-            resolve(this.parseMessage(response));
-          },
-          (error) => {
-            if (error.status === 401) {
-              this.handleUnauthorized(resolve, reject, this.post(url, body));
-            } else {
-              reject(this.parseMessage(error));
-            }
-          }
-        )
-      );
+  private handleUnauthorized(resolve, reject, self, method, callbackArgs) {
+    this.refreshToken()
+    .then(() => {
+      self[method](callbackArgs)
+      .then((response) => {
+        resolve(this.parseMessage(response));
+      }, (error) => {
+        reject(this.parseMessage(error))
+      });
+    }, (error) => {
+      resolve(this.parseMessage(error));
+      UserService.redirectLogin();
+    });
   }
 
-  public put(url, body): any {
-    return new Promise(
-      (resolve, reject) => this.http
-        .put(this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders })
-        .subscribe(
-          (response: any) => {
-            resolve(this.parseMessage(response));
-          },
-          (error) => {
-            if (error.status === 401) {
-              this.handleUnauthorized(resolve, reject, this.put(url, body));
-            } else {
-              reject(this.parseMessage(error));
-            }
-          }
-        )
-      );
-  }
-
-  public get(url): any {
+  private handleRequest(self, method, args, originalArgs) {
     return new Promise(
       (resolve, reject) => {
-        this.activeRequest = this.http
-        .get(this.transformUrl(url), { headers: contentHeaders })
+        this.activeRequest = self['http']
+        [method](...args)
         .subscribe(
           (response: any) => {
             resolve(this.parseMessage(response));
           },
           (error) => {
             if (error.status === 401) {
-              this.handleUnauthorized(resolve, reject, this.get(url));
+              this.handleUnauthorized(resolve, reject, self, method, originalArgs);
             } else {
               reject(this.parseMessage(error));
             }
@@ -112,23 +74,28 @@ export class RequestService {
     );
   }
 
+  public post(url, body): any {
+    let args = [this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders }];
+    let originalArgs = [url, body];
+    return this.handleRequest(this, 'post', args, originalArgs);
+  }
+
+  public put(url, body): any {
+    let args = [this.transformUrl(url), JSON.stringify(body), { headers: contentHeaders }];
+    let originalArgs = [url, body];
+    return this.handleRequest(this, 'put', args, originalArgs);
+  }
+
+  public get(url): any {
+    let args = [this.transformUrl(url), { headers: contentHeaders }];
+    let originalArgs = [url];
+    return this.handleRequest(this, 'get', args, originalArgs);
+  }
+
   public delete(url): any {
-    return new Promise(
-      (resolve, reject) => this.http
-        .delete(this.transformUrl(url), { headers: contentHeaders })
-        .subscribe(
-          (response: any) => {
-            resolve(this.parseMessage(response));
-          },
-          (error) => {
-            if (error.status === 401) {
-              this.handleUnauthorized(resolve, reject, this.delete(url));
-            } else {
-              reject(this.parseMessage(error));
-            }
-          }
-        )
-      );
+    let args = [this.transformUrl(url), { headers: contentHeaders }];
+    let originalArgs = [url];
+    return this.handleRequest(this, 'delete', args, originalArgs);
   }
 
   private refresh() {

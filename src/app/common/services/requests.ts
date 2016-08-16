@@ -21,6 +21,21 @@ export class RequestService {
     return response;
   }
 
+  private handleUnauthorized(resolve, reject, callback) {
+    this.refreshToken()
+    .then(() => {
+      callback
+      .then((response) => {
+        resolve(this.parseMessage(response));
+      }, (error) => {
+        reject(this.parseMessage(error))
+      });
+    }, (error) => {
+      resolve(this.parseMessage(error));
+      UserService.redirectLogin();
+    });
+  }
+
   public transformUrl(url) {
     if (url.indexOf('access_token') > -1) {
       return url;
@@ -48,18 +63,7 @@ export class RequestService {
           },
           (error) => {
             if (error.status === 401) {
-              this.refreshToken(error)
-              .then(() => {
-                this.post(url, body)
-                .then((response) => {
-                  resolve(this.parseMessage(response));
-                }, (error) => {
-                  reject(this.parseMessage(error))
-                });
-              }, (error) => {
-                resolve(this.parseMessage(error));
-                UserService.redirectLogin();
-              });
+              this.handleUnauthorized(resolve, reject, this.post(url, body));
             } else {
               reject(this.parseMessage(error));
             }
@@ -78,18 +82,7 @@ export class RequestService {
           },
           (error) => {
             if (error.status === 401) {
-              this.refreshToken(error)
-              .then(() => {
-                this.put(url, body)
-                .then((response) => {
-                  resolve(this.parseMessage(response));
-                }, (error) => {
-                  reject(this.parseMessage(error))
-                });
-              }, (error) => {
-                resolve(this.parseMessage(error));
-                UserService.redirectLogin();
-              });
+              this.handleUnauthorized(resolve, reject, this.put(url, body));
             } else {
               reject(this.parseMessage(error));
             }
@@ -109,18 +102,7 @@ export class RequestService {
           },
           (error) => {
             if (error.status === 401) {
-              this.refreshToken(error)
-              .then(() => {
-                this.get(url)
-                .then((response) => {
-                  resolve(this.parseMessage(response));
-                }, (error) => {
-                  reject(this.parseMessage(error))
-                });
-              }, (error) => {
-                resolve(this.parseMessage(error));
-                UserService.redirectLogin();
-              });
+              this.handleUnauthorized(resolve, reject, this.get(url));
             } else {
               reject(this.parseMessage(error));
             }
@@ -140,18 +122,7 @@ export class RequestService {
           },
           (error) => {
             if (error.status === 401) {
-              this.refreshToken(error)
-              .then(() => {
-                this.delete(url)
-                .then((response) => {
-                  resolve(this.parseMessage(response));
-                }, (error) => {
-                  reject(this.parseMessage(error))
-                });
-              }, (error) => {
-                resolve(this.parseMessage(error));
-                UserService.redirectLogin();
-              });
+              this.handleUnauthorized(resolve, reject, this.delete(url));
             } else {
               reject(this.parseMessage(error));
             }
@@ -170,7 +141,7 @@ export class RequestService {
     return this.post(config.baseApi + '/oauth/v2/token', body);
   }
 
-  private refreshToken(error) {
+  private refreshToken() {
     if (RequestService.isRefreshingToken) {
       return RequestService.isRefreshingToken;
     }

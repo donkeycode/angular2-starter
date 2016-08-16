@@ -25,7 +25,7 @@ export class RequestService {
     if (url.indexOf('://') === -1) {
       url = config.baseApi + '/' + url;
     }
-    
+
     if (url.indexOf('access_token') > -1) {
       return url;
     }
@@ -109,7 +109,7 @@ export class RequestService {
       refresh_token: localStorage.getItem('auth_refresh_token'),
       grant_type: 'refresh_token'
     };
-    return this.post(config.baseApi + '/oauth/v2/token', body);
+    return this.post('/oauth/v2/token', body);
   }
 
   private refreshToken() {

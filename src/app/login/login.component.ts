@@ -13,6 +13,7 @@ export class Login {
     email: '',
     password: ''
   };
+  errors_global = '';
 
   constructor(private loginService: LoginService,
               private router: Router) {

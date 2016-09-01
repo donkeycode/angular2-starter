@@ -30,10 +30,10 @@ export class Login {
       localStorage.setItem('auth_scope', response.scope);
       localStorage.setItem('auth_token_type', response.token_type);
 
-      UserService.getProfile(true)
-        .then(() => {
-          this.router.navigateByUrl('/');
-        });
+      // UserService.getProfile(true)
+      //   .then(() => {
+      //     this.router.navigateByUrl('/');
+      //   });
     }, (err) => {
       this.errors_global = err.error_description;
     });

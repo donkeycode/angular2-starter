@@ -7,7 +7,7 @@ import { config } from '../../config';
 @Injectable()
 export class RequestService extends BaseRequestService {
 
-  constructor(@Inject(Http) http) {
+  constructor(public http : Http) {
     super(http);
     super.init(config, contentHeaders);
   }

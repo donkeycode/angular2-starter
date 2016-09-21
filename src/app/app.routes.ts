@@ -15,10 +15,9 @@ export const DECLARE_APP = [
 ];
 
 export const APP_ROUTES: Routes = [
-  { path: '',      component: Layout },
+  { path: '',      component: Layout, children: LAYOUT_ROUTES },
   { path: 'login', component: Login },
   { path: '**',    component: NoContent },
-  ...LAYOUT_ROUTES
 ];
 
 export const AUTH_PROVIDERS = [ AuthGuard ];

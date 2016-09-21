@@ -8,6 +8,6 @@ export const LAYOUT_APP = [
 ];
 
 export const LAYOUT_ROUTES: Routes = [
-  { path: 'home',      component: Home },
   { path: 'about',     component: About },
+  { path: '',      component: Home }
 ];

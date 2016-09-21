@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
+import { DefaultImageModule } from 'donkeycode-angular2-tools';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -33,7 +35,8 @@ const APP_PROVIDERS = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(APP_ROUTES, { useHash: true })
+    RouterModule.forRoot(APP_ROUTES, { useHash: true }),
+    DefaultImageModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

@@ -4,6 +4,9 @@
 npm install -g webpack webpack-dev-server typescript rimraf
 npm install
 ```
+
+Change `config.ts.example` with your config
+
 ## start dev
 npm start
 

@@ -59,8 +59,3 @@ npm-debug.log
 # IDE #
 .idea/
 *.swp
-
-# DEPLOY #
-src/app/config.ts
-fabfile.pyc
-release.zip

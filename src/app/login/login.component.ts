@@ -20,22 +20,22 @@ export class Login {
   }
 
   login() {
-    this.loginService.login({
-      username: this.form.email,
-      password: this.form.password
-    }).then((response) => {
-      localStorage.setItem('auth_access_token', response.access_token);
-      localStorage.setItem('auth_expires_in', response.expires_in);
-      localStorage.setItem('auth_refresh_token', response.refresh_token);
-      localStorage.setItem('auth_scope', response.scope);
-      localStorage.setItem('auth_token_type', response.token_type);
+    // this.loginService.login({
+    //   username: this.form.email,
+    //   password: this.form.password
+    // }).then((response) => {
+    //   localStorage.setItem('auth_access_token', response.access_token);
+    //   localStorage.setItem('auth_expires_in', response.expires_in);
+    //   localStorage.setItem('auth_refresh_token', response.refresh_token);
+    //   localStorage.setItem('auth_scope', response.scope);
+    //   localStorage.setItem('auth_token_type', response.token_type);
 
-      UserService.getProfile(true)
-        .then(() => {
-          this.router.navigateByUrl('/');
-        });
-    }, (err) => {
-      this.errors_global = err.error_description;
-    });
+      // UserService.getProfile(true)
+      //   .then(() => {
+      //     this.router.navigateByUrl('/');
+      //   });
+    // }, (err) => {
+    //   this.errors_global = err.error_description;
+    // });
   }
 }

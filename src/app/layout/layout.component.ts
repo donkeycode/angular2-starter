@@ -14,10 +14,10 @@ export class Layout {
 
   ngOnInit() {
     console.log('ngOnInit Layout');
-    UserService.getProfile()
-    .then((response) => {
-      this.profile = response;
-    });
+    // UserService.getProfile()
+    // .then((response) => {
+    //   this.profile = response;
+    // });
   }
 
   logOut() {
